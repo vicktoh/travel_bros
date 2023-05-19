@@ -1,12 +1,13 @@
 'use client';
 
-import { ButtonHTMLAttributes, FC } from "react";
+import { ButtonHTMLAttributes, FC, ReactNode } from "react";
 type ButtonSizes = 'sm' | 'md' | 'lg';
 type ButtonVariants = 'outline' | 'solid'
 export interface  ButtonProps extends  ButtonHTMLAttributes<HTMLButtonElement>  {
-   title: string;
+   title?: string;
    variant?: ButtonVariants
    size?: ButtonSizes, 
+   children?: ReactNode
 }
 
 const ButtonSizeMap: Record<ButtonSizes, string> = {
@@ -17,9 +18,9 @@ const ButtonSizeMap: Record<ButtonSizes, string> = {
 }
 const ButtonVariantMap: Record<ButtonVariants, string> = {
    'outline': `hover:bg-primary-light text-primary border-2 border-primary`,
-   'solid': `hover:bg-red-800 bg-primary bg text-white border-r border-primary hover:border-2 :hover:border-primary`,
+   'solid': `hover:bg-red-800 bg-primary bg text-white border-r border-primary hover:border-[1px] :hover:border-primary`,
 }
-export const Button:FC<ButtonProps> = ({ title, size = 'md', variant='solid', className, ...props }) => {
+export const Button:FC<ButtonProps> = ({ title, size = 'md', variant='solid', className, children, ...props }) => {
 
 
     
@@ -31,7 +32,7 @@ export const Button:FC<ButtonProps> = ({ title, size = 'md', variant='solid', cl
                ButtonSizeMap[size]
            } ${ButtonVariantMap[variant]} ${className || ''}`}
        >
-           {title}
+           {title || children}
        </button>
    );
 }

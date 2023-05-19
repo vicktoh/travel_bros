@@ -1,3 +1,39 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+},
+"extends": [
+    "react-app",
+    "plugin:react/recommended",
+    "google",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+],
+"parser": "@typescript-eslint/parser",
+"parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+},
+"plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+],
+"rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["off"],
+    "require-jsdoc": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-console": 1
+}
 }
