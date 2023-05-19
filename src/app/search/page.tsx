@@ -1,7 +1,7 @@
 import { fetchVehicles } from "@/services/search";
 import { AvailableVehicles } from "./AvailableVehicles";
 
-export async function getVehicles(){
+function getVehicles(){
    return  fetchVehicles();
 }
 
