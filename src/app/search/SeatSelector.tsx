@@ -8,7 +8,7 @@ import React, { FC, useMemo, useState } from "react";
 import { BsArrowLeft, BsPersonFill, BsPersonFillX } from "react-icons/bs";
 import { GiCancel, GiSteeringWheel } from "react-icons/gi";
 import { SelectedSeatsTable } from "./SelectedSeatsTable";
-import { OrderForm } from "./OrderForm";
+import { OrderForm, OrderInfo } from "./OrderForm";
 
 type SeatSelectorProps = {
   vehicleNumberOfSeats: number;
@@ -19,7 +19,7 @@ type SeatSelectorProps = {
   setSelectedSeats: (seats: Record<string, SeatInfo | undefined>) => void;
   previousSelectedSeats?: Record<string, SeatInfo | undefined>;
   showPayment?: boolean;
-  onConfirmPayment?: () => void;
+  onContinuetoPayment?: (order: OrderInfo) => Promise<void>;
   onContinue?: () => void;
   isReturn?: boolean;
   backLablel?: string;
@@ -217,14 +217,13 @@ export const SeatSelector: FC<SeatSelectorProps> = ({
   setSelectedSeats,
   showPayment,
   trip,
-  onConfirmPayment,
+  onContinuetoPayment,
   onContinue,
   previousSelectedSeats,
   isReturn,
   onBack,
   backLablel
 }) => {
-  console.log({ trip, showPayment });
 
   const seatSelectionComplete = useMemo(() => {
     return Object.values(selectedSeats).length === numberOfSeats;
@@ -277,7 +276,7 @@ export const SeatSelector: FC<SeatSelectorProps> = ({
             )}`}</p>
           </>
         ) : null}
-        {showPayment && seatSelectionComplete ? <OrderForm /> : null}
+        {showPayment && seatSelectionComplete && onContinuetoPayment ? <OrderForm onContinuetoPayment={onContinuetoPayment} /> : null}
         {trip.returnTrip && !showPayment && seatSelectionComplete ? (
           <Button onClick={onContinue} size="md" className="my-5">
             Continue

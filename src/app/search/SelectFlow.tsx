@@ -1,29 +1,43 @@
 import { Booking, ConfirmedPassenger, ReturnTrip, SeatInfo } from "@/types/Booking";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { VehicleSelector } from "./VehicleSelector";
 import { SeatSelector } from "./SeatSelector";
-type Page =
+import { PaystackCheckout } from "./PaystackCheckout";
+import { OrderInfo } from "./OrderForm";
+import { PaystackProps } from "react-paystack/dist/types";
+import { getPaymentRef } from "@/services/search";
+import { Success } from "./Success";
+export type Page =
   | "select-vehicle"
   | "select-seats"
   | "select-return-vehicle"
-  | "select-return-seats";
+  | "select-return-seats"
+  | "Payment"
+  | "success"
+  | "fail"
 type SelectFlowProps = {
   bookings: Booking[];
   returnBookings?: Booking[];
   trip: ReturnTrip;
+  page: Page,
+  setPage: (page: Page) => void;
 };
 type Seat = Omit<ConfirmedPassenger, "paymentRef">;
 export const SelectFlow: FC<SelectFlowProps> = ({
   bookings,
   returnBookings,
   trip,
+  page,
+  setPage,
 }) => {
-  const [page, setPage] = useState<Page>("select-vehicle");
   const [seats, setSeats] = useState<Record<string, SeatInfo | undefined>>({});
   const [returnSeats, setReturnSeats] = useState< Record<string, SeatInfo | undefined>>({});
   const [booking, setBooking] = useState<Booking>();
   const [returnBooking, setReturnBooking] = useState<Booking>();
-
+  const [payStackOption, setPaystackOption] = useState<PaystackProps>({publicKey: '', amount: 0, email: ''});
+  const total = useMemo(()=> {
+    return (booking?.price || 0) * trip.numberOfSeats * (trip.returnTrip ? 2 : 1)
+  }, [booking?.price, trip.numberOfSeats, trip.returnTrip])
   const onBook = (booking: Booking) => {
     setBooking(booking);
     setPage("select-seats");
@@ -46,7 +60,31 @@ export const SelectFlow: FC<SelectFlowProps> = ({
     setReturnSeats({});
     setPage('select-return-vehicle');
   }
-  
+  console.log("paystack key", process.env.NEXT_PUBLIC_PAY_STACK_KEY)
+  const onGotoPayment = async (order: OrderInfo) => {
+    const paymentRef = await getPaymentRef();
+    const paystackOption: PaystackProps = {
+      amount: total * 100,
+      email: order.email,
+      publicKey: process.env.NEXT_PUBLIC_PAY_STACK_KEY!,
+      reference: paymentRef,
+      firstname: order.name,
+      phone: order.phone, 
+    }
+
+    setPaystackOption(paystackOption);
+    setPage('Payment');
+  }
+  const onClosePayment = ()=> {
+
+  }
+  const onSuccess = ()=> {
+    setSeats({});
+    setReturnSeats({});
+    setBooking(undefined);
+    setReturnBooking(undefined);
+    setPage('success');
+  }  
   switch (page) {
     case "select-vehicle":
       return (
@@ -71,6 +109,7 @@ export const SelectFlow: FC<SelectFlowProps> = ({
           showPayment={!trip.returnTrip}
           onBack={onBackFromSeatSelect}
           backLablel="Back to vehicle"
+          onContinuetoPayment={onGotoPayment}
         />
       );
     case "select-return-vehicle":
@@ -86,6 +125,7 @@ export const SelectFlow: FC<SelectFlowProps> = ({
           onBack={onBackFromReturnVehicle}
         />
       );
+      return null
     case "select-return-seats":
       if (!returnBooking) return null;
       return (
@@ -101,8 +141,16 @@ export const SelectFlow: FC<SelectFlowProps> = ({
           previousSelectedSeats={seats}
           onBack={onBackFromReturnSeats}
           backLablel="Back to vehicle select"
+          onContinuetoPayment={onGotoPayment}
           
         />
       );
+      case "Payment":
+        if(!payStackOption) return null;
+        return <PaystackCheckout options={payStackOption} trip={trip} total={total} onClose={onClosePayment} onSuccess={onSuccess}/>
+      case "success":
+        return <Success />
+       default: 
+      return null
   }
 };

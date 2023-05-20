@@ -1,9 +1,9 @@
 
 import { db } from '@/firebase'
-import { Booking, Destination, ReturnTrip } from '@/types/Booking'
-import { Vehicle, VehicleWithID } from '@/types/Vehicle'
-import { FieldPath, collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
-
+import { Booking, Destination, ReturnTrip, SeatInfo } from '@/types/Booking'
+import { VehicleWithID } from '@/types/Vehicle'
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import { PAYMENT_COLLECTION } from './constants'
 
 export const checkAvailability = async (trip: {from: string, to: string, date: string}) => {
    const ref = collection(db, 'bookings');
@@ -86,4 +86,21 @@ export const fetchVehicles = async ()=> {
       vehicles.push(vehicle);
    });
    return vehicles;
+}
+export const getPaymentRef = async ()=> {
+   const ref = collection(db, PAYMENT_COLLECTION)
+   const paymentRef = doc(ref)
+   return paymentRef.id;
+}
+type PaymentInfo = {
+   trip: ReturnTrip;
+   transactionRef: string;
+   total: number;
+   email: number;
+   seats: SeatInfo[];
+   returnSeats?: SeatInfo[];
+}
+export const storePaymentRef = async (payment: PaymentInfo) => {
+   const payMentRef = doc(db, `${PAYMENT_COLLECTION}/${payment.transactionRef}`);
+   return setDoc(payMentRef, payment);
 }
