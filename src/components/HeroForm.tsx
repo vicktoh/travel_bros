@@ -8,7 +8,7 @@ import { SelectOption } from "./common/SelectOption";
 import { SelectInput } from "./common/SelectInput";
 import { Button } from "./common/Button";
 import { useRouter } from "next/navigation";
-import { isBefore, isPast } from "date-fns";
+import { isBefore, isPast, isSameDay } from "date-fns";
 import { BsPeople } from "react-icons/bs";
 import { Gi3DGlasses } from "react-icons/gi";
 const States = [
@@ -108,7 +108,7 @@ export const HeroForm = () => {
           setErrorMessages({ ...errorMessages, date: "Please select a date" });
           return false;
         }
-        if (isPast(new Date(trip[field]))) {
+        if (!isSameDay(new Date(trip[field]), new Date()) && isPast(new Date(trip[field]))) {
           setErrorMessages({
             ...errorMessages,
             date: "Can not select a past date",
@@ -189,9 +189,10 @@ export const HeroForm = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-row items-center bg-white pt-3 pb-4 px-16 rounded-md -mb-3">
+      <div className="flex flex-col md:flex-row items-center justify-center bg-white pt-3 pb-4 px-16 rounded-md -mb-3">
+        <div className="flex flex-row">
         <span
-          className={`mr-2 text-base ${
+          className={`mr-2 text-sm md:text-base ${
             !trip.returnTrip ? "text-amber-900" : "text-slate-900"
           }`}
         >
@@ -213,14 +214,16 @@ export const HeroForm = () => {
           />
         </Switch>
         <span
-          className={`ml-2 text-base ${
+          className={`ml-2 text-sm md:text-base ${
             trip.returnTrip ? "text-amber-900" : "text-slate-900"
           }`}
         >
           Return Trip
         </span>
+        </div>
+
         <div className="flex items-center ml-8 gap-3">
-          <span className="text-base text-slate-900">Passengers</span>
+          <span className="text-sm md:text-base text-slate-900">Passengers</span>
           <Input
             value={trip.numberOfSeats}
             type="number"
@@ -235,7 +238,7 @@ export const HeroForm = () => {
           />
         </div>
       </div>
-      <div className="flex md:flex-row md:items-center  flex-col items-start bg-white pb-6 py-5 gap-3 px-8 rounded-md mw">
+      <div className="flex md:flex-row md:items-center min-w-[90%] md:w-auto flex-col items-start bg-white pb-6 py-5 gap-3 px-8 rounded-md mw">
         <SelectInput
           placeholder="Select Origin"
           label="From"

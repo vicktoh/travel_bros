@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={wfont.className}>
+      <body className={`${wfont.className} overflow-x-hidden relative`}>
         <Header />
         {children}</body>
     </html>

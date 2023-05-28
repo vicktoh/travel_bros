@@ -18,7 +18,7 @@ type MenuType = {
      },
      {
          title: 'Bookings',
-         path: '/bookings',
+         path: '#bookings',
          segment: 'bookings',
      },
      {
@@ -36,7 +36,7 @@ export const Header = () => {
           <div className="flex flex-row">
               {MenuItems.map(({ path, title, segment }, key) => (
                   <Link
-                      key={`navigationLink`}
+                      key={`navigationLink-${key}`}
                       className={`${
                           segment === activeSegment
                               ? 'text-white font-bold'

@@ -1,12 +1,12 @@
-import { Booking, ConfirmedPassenger, ReturnTrip, SeatInfo } from "@/types/Booking";
+import { Booking, ConfirmedPassenger, OrderInfo, ReturnTrip, SeatInfo } from "@/types/Booking";
 import React, { FC, useMemo, useState } from "react";
 import { VehicleSelector } from "./VehicleSelector";
 import { SeatSelector } from "./SeatSelector";
 import { PaystackCheckout } from "./PaystackCheckout";
-import { OrderInfo } from "./OrderForm";
 import { PaystackProps } from "react-paystack/dist/types";
-import { getPaymentRef } from "@/services/search";
+import { PaymentInfo, getPaymentRef, storePaymentRef } from "@/services/search";
 import { Success } from "./Success";
+
 export type Page =
   | "select-vehicle"
   | "select-seats"
@@ -60,8 +60,9 @@ export const SelectFlow: FC<SelectFlowProps> = ({
     setReturnSeats({});
     setPage('select-return-vehicle');
   }
-  console.log("paystack key", process.env.NEXT_PUBLIC_PAY_STACK_KEY)
   const onGotoPayment = async (order: OrderInfo) => {
+    
+    if(!booking) return;
     const paymentRef = await getPaymentRef();
     const paystackOption: PaystackProps = {
       amount: total * 100,
@@ -71,7 +72,20 @@ export const SelectFlow: FC<SelectFlowProps> = ({
       firstname: order.name,
       phone: order.phone, 
     }
+    const paymentInfo: PaymentInfo = {
+      booking,
+      order,
+      price: total,
+      transactionRef: paymentRef,
+      trip: trip,
+      ...(returnBooking ? {returnBooking}: {}),
+      ...(returnSeats && returnBooking ? { returnSeats}: {}),
+      seats,
+      status: 'pending',
 
+    }
+    console.log(paymentInfo)
+    await storePaymentRef(paymentInfo);
     setPaystackOption(paystackOption);
     setPage('Payment');
   }
@@ -149,7 +163,8 @@ export const SelectFlow: FC<SelectFlowProps> = ({
         if(!payStackOption) return null;
         return <PaystackCheckout options={payStackOption} trip={trip} total={total} onClose={onClosePayment} onSuccess={onSuccess}/>
       case "success":
-        return <Success />
+        if(!payStackOption || !payStackOption.reference) return null;
+        return <Success paymentRef={payStackOption.reference} />
        default: 
       return null
   }

@@ -2,13 +2,13 @@ import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
 import { SelectInput } from "@/components/common/SelectInput";
 import { formatNumber } from "@/services/utils";
-import { Booking, ReturnTrip, SeatInfo } from "@/types/Booking";
+import { Booking, OrderInfo, ReturnTrip, SeatInfo } from "@/types/Booking";
 import { Popover } from "@headlessui/react";
 import React, { FC, useMemo, useState } from "react";
 import { BsArrowLeft, BsPersonFill, BsPersonFillX } from "react-icons/bs";
 import { GiCancel, GiSteeringWheel } from "react-icons/gi";
 import { SelectedSeatsTable } from "./SelectedSeatsTable";
-import { OrderForm, OrderInfo } from "./OrderForm";
+import { OrderForm } from "./OrderForm";
 
 type SeatSelectorProps = {
   vehicleNumberOfSeats: number;
@@ -23,7 +23,7 @@ type SeatSelectorProps = {
   onContinue?: () => void;
   isReturn?: boolean;
   backLablel?: string;
-  onBack?: ()=> void;
+  onBack?: () => void;
 };
 type SeatsProps = {
   numberOfSeats: number;
@@ -150,7 +150,12 @@ const Seat: FC<SeatProps> = ({
             </div>
           </Popover.Button>
           {available && (selected || canSelect) ? (
-            <Popover.Panel className="absolute top-0 -translate-y-[70%] z-10 bg-white shadow-lg rounded-lg border-[1px] border-primary-light py-3">
+            <Popover.Panel
+              className={`absolute left-0 ${
+                seat % 2 == 1 ? "-translate-x-[35%]" : ""
+              } md:translate-x-1  top-0 -translate-y-[70%] z-10
+               bg-white shadow-lg rounded-lg border-[1px] border-primary-light py-3`}
+            >
               <SeatForm
                 onSubmit={(info) => {
                   onSelectSeat(info, seat);
@@ -193,7 +198,7 @@ const Seats: FC<SeatsProps> = ({
     setSelectedSeats({ ...selectedSeats, [seat]: seatInfo });
   };
   const unSelectSeat = (seat: number) => {
-    const seatCopy = {...selectedSeats};
+    const seatCopy = { ...selectedSeats };
     delete seatCopy[seat];
     setSelectedSeats(seatCopy);
   };
@@ -222,69 +227,79 @@ export const SeatSelector: FC<SeatSelectorProps> = ({
   previousSelectedSeats,
   isReturn,
   onBack,
-  backLablel
+  backLablel,
 }) => {
-
   const seatSelectionComplete = useMemo(() => {
     return Object.values(selectedSeats).length === numberOfSeats;
   }, [numberOfSeats, selectedSeats]);
+  const passengers = useMemo(() => {
+    return Object.entries(booking.confirmedPassengers).map(
+      ([key, { seatNumber }]) => seatNumber,
+    );
+  }, [booking.confirmedPassengers]);
   return (
     <>
-    {onBack ? (
-        <Button variant="outline" size="sm" className="w-max items-center mt-5 mb-3 ml-5" onClick={onBack}>
+      {onBack ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-max items-center mt-5 mb-3 ml-5"
+          onClick={onBack}
+        >
           <BsArrowLeft className="mr-2" /> {backLablel || "Back"}
         </Button>
       ) : null}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-4 pb-8">
-      <div className="flex flex-col">
-        <h3 className="text-xl mt-3 mb-5 text-center font-semibold text-back">
-          {`Select ${numberOfSeats} seat(s)`}
-        </h3>
-        <Seats
-          selectedSeats={selectedSeats}
-          setSelectedSeats={setSelectedSeats}
-          numberOfSeatsToSelect={numberOfSeats}
-          numberOfSeats={vehicleNumberOfSeats}
-          passengers={[1, 2]}
-        />
-      </div>
-      <div className="flex flex-col px-5">
-        <h3 className="font-semibold text-xl mt-3 mb-5 text-black">
-          Passenger(s) Details
-        </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-4 pb-8">
+        <div className="flex flex-col">
+          <h3 className="text-xl mt-3 mb-5 text-center font-semibold text-back">
+            {`Select ${numberOfSeats} seat(s)`}
+          </h3>
+          <Seats
+            selectedSeats={selectedSeats}
+            setSelectedSeats={setSelectedSeats}
+            numberOfSeatsToSelect={numberOfSeats}
+            numberOfSeats={vehicleNumberOfSeats}
+            passengers={passengers}
+          />
+        </div>
+        <div className="flex flex-col px-5">
+          <h3 className="font-semibold text-xl mt-3 mb-5 text-black">
+            Passenger(s) Details
+          </h3>
 
-        {trip.returnTrip && isReturn && previousSelectedSeats ? (
-          <div className="flex flex-col">
-            <h3 className="text-lg font-medium text-primary mb-3">{`Inbound trip ${trip.from} to ${trip.to} on ${trip.date}`}</h3>
-            <SelectedSeatsTable selectedSeats={previousSelectedSeats} />
-          </div>
-        ) : null}
+          {trip.returnTrip && isReturn && previousSelectedSeats ? (
+            <div className="flex flex-col">
+              <h3 className="text-lg font-medium text-primary mb-3">{`Inbound trip ${trip.from} to ${trip.to} on ${trip.date}`}</h3>
+              <SelectedSeatsTable selectedSeats={previousSelectedSeats} />
+            </div>
+          ) : null}
 
-        {trip.returnTrip && isReturn && previousSelectedSeats ? (
-          <h3 className="text-lg font-medium text-primary mt-5 mb-3">{`Outbound trip ${trip.to} to ${trip.from} on ${trip.returnDate}`}</h3>
-        ) : null}
-        <SelectedSeatsTable selectedSeats={selectedSeats} />
-        {showPayment ? (
-          <>
-            <p className="text-base mb-2 mt-5 text-slate-800">{`Price per person: ${formatNumber(
-              booking.price,
-              "NGN",
-            )}`}</p>
-            <p className="text-base mb-4 text-slate-600">{`Total: ${formatNumber(
-              booking.price * numberOfSeats * (trip.returnTrip ? 2 : 1),
-              "NGN",
-            )}`}</p>
-          </>
-        ) : null}
-        {showPayment && seatSelectionComplete && onContinuetoPayment ? <OrderForm onContinuetoPayment={onContinuetoPayment} /> : null}
-        {trip.returnTrip && !showPayment && seatSelectionComplete ? (
-          <Button onClick={onContinue} size="md" className="my-5">
-            Continue
-          </Button>
-        ) : null}
+          {trip.returnTrip && isReturn && previousSelectedSeats ? (
+            <h3 className="text-lg font-medium text-primary mt-5 mb-3">{`Outbound trip ${trip.to} to ${trip.from} on ${trip.returnDate}`}</h3>
+          ) : null}
+          <SelectedSeatsTable selectedSeats={selectedSeats} />
+          {showPayment ? (
+            <>
+              <p className="text-base mb-2 mt-5 text-slate-800">{`Price per person: ${formatNumber(
+                booking.price,
+                "NGN",
+              )}`}</p>
+              <p className="text-base mb-4 text-slate-600">{`Total: ${formatNumber(
+                booking.price * numberOfSeats * (trip.returnTrip ? 2 : 1),
+                "NGN",
+              )}`}</p>
+            </>
+          ) : null}
+          {showPayment && seatSelectionComplete && onContinuetoPayment ? (
+            <OrderForm onContinuetoPayment={onContinuetoPayment} />
+          ) : null}
+          {!showPayment && seatSelectionComplete ? (
+            <Button onClick={onContinue} size="md" className="my-5">
+              Continue
+            </Button>
+          ) : null}
+        </div>
       </div>
-    </div>
     </>
-
   );
 };

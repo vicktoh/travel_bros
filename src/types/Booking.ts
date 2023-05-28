@@ -37,7 +37,8 @@ export type Booking = {
    to: string;
    vehicleType: string;
    availableSeats: number;
-   confirmedPassenger: ConfirmedPassenger[];
+   numberOfSeats: number;
+   confirmedPassengers: Record<string, ConfirmedPassenger>;
    price: number;
 }
 
@@ -47,3 +48,21 @@ export type SeatInfo = {
    phone?: string;
 
 }
+export type SeatType = Record<string, SeatInfo | undefined>;
+
+export type OrderInfo = {
+   email: string;
+    name: string;
+    phone: string;
+    nextOfKin: string;
+    nextOfKinPhone: string;
+ 
+ }
+
+ export type BookingChange = {
+   booking: Booking;
+   newBooking: Booking;
+   ref: string;
+   oldSeats: SeatType;
+   newSeat: SeatType;
+ }

@@ -1,15 +1,8 @@
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input'
-import { Booking, ReturnTrip, SeatInfo } from '@/types/Booking';
+import { Booking, OrderInfo, ReturnTrip, SeatInfo } from '@/types/Booking';
 import React, { FC, useState } from 'react'
-export type OrderInfo = {
-  email: string;
-   name: string;
-   phone: string;
-   nextOfKin: string;
-   nextOfKinPhone: string;
 
-}
 type OrderFormProps = {
   onContinuetoPayment: (orderInfo: OrderInfo) => Promise<void>;
  
