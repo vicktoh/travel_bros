@@ -73,7 +73,6 @@ export const AvailableVehicles: FC<AvailableVehiclesProps> = ({ vehicles }) => {
   useEffect(() => {
     fetchAvaliableVehilce();
   }, [fetchAvaliableVehilce]);
-  console.log("env", process.env.NEXT_PUBLIC_PAY_STACK_KEY)
   const renderPageHeader = () => {
     switch (true) {
       case page === "select-vehicle" || page === "select-return-vehicle":
