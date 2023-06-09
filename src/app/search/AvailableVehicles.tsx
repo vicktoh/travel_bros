@@ -4,7 +4,7 @@ import { Loading } from "@/components/common/Loading";
 import { getAvailableVehicles } from "@/services/search";
 import { Booking, ReturnTrip } from "@/types/Booking";
 import { VehicleWithID } from "@/types/Vehicle";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {  useRouter, useSearchParams } from "next/navigation";
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { Page, SelectFlow } from "./SelectFlow";
