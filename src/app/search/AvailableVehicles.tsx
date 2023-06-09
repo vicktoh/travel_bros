@@ -4,10 +4,11 @@ import { Loading } from "@/components/common/Loading";
 import { getAvailableVehicles } from "@/services/search";
 import { Booking, ReturnTrip } from "@/types/Booking";
 import { VehicleWithID } from "@/types/Vehicle";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {  useRouter, useSearchParams } from "next/navigation";
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { Page, SelectFlow } from "./SelectFlow";
+import { EmptyState } from "./EmptyState";
 type AvailableVehiclesProps = {
   vehicles: VehicleWithID[];
 };
@@ -72,7 +73,6 @@ export const AvailableVehicles: FC<AvailableVehiclesProps> = ({ vehicles }) => {
   useEffect(() => {
     fetchAvaliableVehilce();
   }, [fetchAvaliableVehilce]);
-
   const renderPageHeader = () => {
     switch (true) {
       case page === "select-vehicle" || page === "select-return-vehicle":
@@ -152,7 +152,7 @@ export const AvailableVehicles: FC<AvailableVehiclesProps> = ({ vehicles }) => {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <div className="flex border-2 relative flex-col md:min-h-[300px] items-start px-6 justify-center bg-hero-image bg-cover bg-center bg-opacity-60 bg-gray-800">
+      <div className="flex border-2 relative flex-col md:min-h-[300px] items-start px-6 justify-center bg-hero-image bg-cover bg-center bg-opacity-60 bg-gray-800 pt-7">
         <div className="bg-black bg-opacity-40 absolute left-0 right-0 top-0 bottom-0 "></div>
 
         {renderPageHeader()}
@@ -172,7 +172,8 @@ export const AvailableVehicles: FC<AvailableVehiclesProps> = ({ vehicles }) => {
         </>
       ) : (
         <div className="flex flex-col justify-center items-center">
-          <p className="text-xl font-bol">Empty State</p>
+           <EmptyState />
+
         </div>
       )}
     </div>

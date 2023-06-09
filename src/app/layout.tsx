@@ -1,5 +1,6 @@
 import { Header } from '@/components/common/Header'
 import './globals.css'
+import Script from 'next/script'
 // import { Inter } from 'next/font/google'
 
 // const inter = Inter({ subsets: ['latin'] })
@@ -23,6 +24,14 @@ export default function RootLayout({
       <body className={`${wfont.className} overflow-x-hidden relative`}>
         <Header />
         {children}</body>
+<Script async src="https://www.googletagmanager.com/gtag/js?id=G-RRBWN49908"></Script>
+<Script>
+  {`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RRBWN49908');`}
+</Script>
     </html>
   )
 }

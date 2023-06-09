@@ -2,7 +2,7 @@
 import { ReturnTrip, Trip } from "@/types/Booking";
 import { Switch } from "@headlessui/react";
 import { off } from "process";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Input } from "./common/Input";
 import { SelectOption } from "./common/SelectOption";
 import { SelectInput } from "./common/SelectInput";
@@ -20,7 +20,11 @@ const States = [
 ];
 const states = ["Abuja", "Jos"];
 const vehicles = ["Prestige(5 seater)", "Regular(14 seater)"];
-export const HeroForm = () => {
+
+type HeroFormProps = {
+  replace?:boolean
+}
+export const HeroForm: FC<HeroFormProps> = ( { replace = false }) => {
   const [trip, setTrip] = useState<ReturnTrip>({
     returnDate: "",
     to: "",
@@ -50,7 +54,7 @@ export const HeroForm = () => {
       urlParams.set(key, value.toString());
     });
     const path = `/search?${urlParams.toString()}`;
-    router.push(path);
+    replace ? router.replace(path) : router.push(path);
   };
 
   const validate = (field: keyof typeof trip) => {
