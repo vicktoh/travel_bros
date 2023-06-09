@@ -21,19 +21,19 @@ type MenuType = {
          path: '#bookings',
          segment: 'bookings',
      },
-     {
-         title: 'Terminals',
-         path: '/terminals',
-         segment: 'bookings',
-     },
+    //  {
+    //      title: 'Terminals',
+    //      path: '/terminals',
+    //      segment: 'bookings',
+    //  },
  ];
 export const Header = () => {
    const activeSegment  = useSelectedLayoutSegment();
    
   return (
-      <div className="w-screen md:flex hidden z-30 py-2 pl-3 pr-6 sticky top-0 -m-6 justify-between left-0 right-0 items-center">
-          <h3 className="text-2xl text-white font-bold">TravelBros</h3>
-          <div className="flex flex-row">
+      <div className="w-screen flex z-30 py-2 pl-3 pr-6 sticky top-0 -m-6 justify-between left-0 right-0 items-center">
+          <h3 className="text-xl md:text-2xl text-white font-bold">TravelBros</h3>
+          <div className="flex-row flex">
               {MenuItems.map(({ path, title, segment }, key) => (
                   <Link
                       key={`navigationLink-${key}`}
@@ -41,7 +41,7 @@ export const Header = () => {
                           segment === activeSegment
                               ? 'text-white font-bold'
                               : 'text-red-50'
-                      } text-base ml-3`}
+                      } text-md md:text-base ml-3`}
                       href={path}
                   >
                       {title}

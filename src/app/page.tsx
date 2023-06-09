@@ -12,12 +12,16 @@ export default function Home() {
       <div className="flex pt-12 md:pt-0 relative flex-col md:min-h-[538px] min-h-screen items-center justify-center bg-hero-image bg-cover bg-center bg-opacity-60 bg-gray-800 pb-5">
         <div className="bg-black bg-opacity-40 absolute left-0 right-0 top-0 bottom-0 "></div>
         <div className="flex flex-col max-w-[900px] items-center justify-center relative z-10 md:px-0 px-5">
-          <p className="md:text-5xl text-2xl text-white font-bold text-center mt-8 md:mt-0">
-            Experience safe, convenient and luxurious Travel{" "}
-          </p>
-          <p className="text-base text-slate-100 md:my-10 my-2 text-center md:w-full w-[80%]">
-            Select your destination and get ready for the best road experience
-          </p>
+          <div className="overflow-hidden">
+            <p className="md:text-5xl text-3xl text-white font-bold text-center mt-8 md:mt-0 animate-slide-up">
+              Experience safe, convenient and luxurious Travel{" "}
+            </p>
+          </div>
+          <div className="overflow-hidden md:my-10 my-2">
+            <p className="text-base text-slate-100 mx-auto  text-center md:w-full w-[80%] animate-slide-down">
+              Select your destination and get ready for the best road experience
+            </p>
+          </div>
           <HeroForm />
         </div>
       </div>

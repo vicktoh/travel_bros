@@ -1,6 +1,7 @@
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input'
 import { Booking, OrderInfo, ReturnTrip, SeatInfo } from '@/types/Booking';
+import parsePhonenumber, { CountryCode, formatIncompletePhoneNumber } from 'libphonenumber-js';
 import React, { FC, useState } from 'react'
 
 type OrderFormProps = {
@@ -41,6 +42,14 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
           });
           return false;
         }
+        const phone = parsePhonenumber(value, "NG");
+        if(!phone?.isValid){
+          setErrorMessages({
+           ...errorMessages,
+            phone: 'Invalid phone number',
+          });
+          return false;
+        }
         setErrorMessages({ ...errorMessages, phone: "" });
         break;
       case "nextOfKin":
@@ -51,6 +60,7 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
           });
           return false;
         }
+        
         setErrorMessages({ ...errorMessages, nextOfKin: "" });
         break;
       case "nextOfKinPhone":
@@ -58,6 +68,14 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
           setErrorMessages({
             ...errorMessages,
             nextOfKinPhone: 'Your Next Of Kin is required',
+          });
+          return false;
+        }
+        const nextPhone = parsePhonenumber(value, "NG");
+        if(!nextPhone?.isValid){
+          setErrorMessages({
+           ...errorMessages,
+            nextOfKinPhone: 'Invalid phone number',
           });
           return false;
         }
@@ -133,7 +151,7 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
             setOrder((order) => ({ ...order, phone: e.target.value }))
           }
           label="Phone"
-          placeholder="Phone number"
+          placeholder="Eg. 0708865342"
           error={errorMessages.phone}
 
         />
@@ -143,8 +161,8 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
           onChange={(e) =>
             setOrder((order) => ({ ...order, nextOfKin: e.target.value }))
           }
-          label="Next of Kin"
-          placeholder="Next of Kin"
+          label="Next of Kin Name"
+          placeholder="Next of Kin Name"
           error={errorMessages.nextOfKin}
 
         />
@@ -155,7 +173,7 @@ export const OrderForm: FC<OrderFormProps> = ({onContinuetoPayment }) => {
             setOrder((order) => ({ ...order, nextOfKinPhone: e.target.value }))
           }
           label="Next of Kin Phone"
-          placeholder="Next of Kin Phone"
+          placeholder="Eg. 0708865342"
           error={errorMessages.nextOfKinPhone}
 
         />
