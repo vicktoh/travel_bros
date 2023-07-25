@@ -8,11 +8,11 @@ const icons = [
 const contactInformation = [
    {
       label: 'Email',
-      value: 'support@travelbros.com'
+      value: 'travelbrosng@gmail.com'
    },
    {
-      label: 'phone',
-      value: 'support@travelbros.com'
+      label: 'Phone Numbers',
+      value: '+234 706 647 5316, +234 906 335 2617, +234 806 855 7467'
    }
 ]
 const terminals = [
@@ -21,12 +21,8 @@ const terminals = [
       value: 'No 5, Asokoro Drive assokoro disstrict, in the house'
    },
    {
-      label: 'Sokoto Terminal',
-      value: 'No 5, Asokoro Drive assokoro disstrict, in the house'
-   },
-   {
-      label: 'address',
-      value: 'support@travelbros.com'
+      label: 'Abuja Office',
+      value: 'House FO2, 442 Crescent Citec Villas Gwarimpa'
    },
    
 ]
