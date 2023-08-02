@@ -1,10 +1,19 @@
 import React from 'react'
 import { BsFacebook, BsInstagram, BsTwitter } from 'react-icons/bs'
 const icons = [
-   BsFacebook,
-   BsInstagram,
-   BsTwitter
-]
+  {
+    link: "https://www.facebook.com/profile.php?id=100094977143013&mibextid=LQQJ4d",
+    icon: BsFacebook,
+  },
+  {
+    link: "https://instagram.com/travel_brosng?igshid=MjEwN2IyYWYwYw==",
+    icon: BsInstagram,
+  },
+  {
+    link: "https://twitter.com/travelbrosng/status/1684502719220817921?s=46&t=VlfYmf8dC1t7Oe7RKeNrwQ",
+    icon: BsTwitter,
+  },
+];
 const contactInformation = [
    {
       label: 'Email',
@@ -42,7 +51,7 @@ export const Footer = () => {
          <p className="text-sm text-slate-900">Checkout our Socials</p>
          <div className="flex flex-row gap-3">
             {
-               icons.map((Icon, i)=> <Icon size={18} className='text-slate-800' key={`social-icon-${i}`} />)
+               icons.map(({icon:Icon, link}, i)=> <a href = {link} target='_blank' ><Icon size={18} className='text-slate-800' key={`social-icon-${i}`} /></a>)
             }
          </div>
       </div>
