@@ -5,6 +5,7 @@ import Script from 'next/script'
 
 // const inter = Inter({ subsets: ['latin'] })
 import {Work_Sans} from 'next/font/google'
+import { Toaster } from '@/components/ui/toaster'
 const wfont = Work_Sans({
   subsets:['latin'],
   variable:'--font-wfont'
@@ -28,8 +29,9 @@ export default function RootLayout({
           <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/>
 </head>
       <body className={`${wfont.className} overflow-x-hidden relative`}>
-        <Header />
-        {children}</body>
+        {children}
+        <Toaster />
+        </body>
 <Script async src="https://www.googletagmanager.com/gtag/js?id=G-RRBWN49908"></Script>
 <Script>
   {`window.dataLayer = window.dataLayer || [];

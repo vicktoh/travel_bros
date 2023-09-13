@@ -21,6 +21,11 @@ type MenuType = {
          path: '#bookings',
          segment: 'bookings',
      },
+     {
+         title: 'Driver Signup',
+         path: '/drivers/signup',
+         segment: 'drivers',
+     },
     //  {
     //      title: 'Terminals',
     //      path: '/terminals',

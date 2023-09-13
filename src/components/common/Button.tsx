@@ -18,7 +18,7 @@ const ButtonSizeMap: Record<ButtonSizes, string> = {
 }
 const ButtonVariantMap: Record<ButtonVariants, string> = {
    'outline': `hover:bg-primary-light text-primary border-2 border-primary`,
-   'solid': `hover:bg-red-800 bg-primary bg text-white border-r border-primary hover:border-[1px] :hover:border-primary`,
+   'solid': `hover:bg-red-800 bg-brand bg text-white border-r border-primary hover:border-[1px] :hover:border-primary`,
 }
 export const Button:FC<ButtonProps> = ({ title, size = 'md', variant='solid', className, children, ...props }) => {
 
