@@ -1,5 +1,4 @@
 "use client";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardContent,
@@ -15,11 +14,7 @@ import {
   FormMessage,
   Form,
 } from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import {
   Select,
   SelectContent,
@@ -32,7 +27,7 @@ import { useAuthStore, useRegistrationStore } from "@/states/drivers";
 import { RegistrationInfo, genders } from "@/types/Driver";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, sub } from "date-fns";
-import { CalendarIcon, LucideLoader, LucidePencil } from "lucide-react";
+import { LucideLoader, LucidePencil } from "lucide-react";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -47,32 +42,39 @@ import {
   uploadDocument,
 } from "@/services/drivers";
 import { updateProfile } from "firebase/auth";
-import { updateDoc } from "firebase/firestore";
 import { useToast } from "../ui/use-toast";
 import { Progress } from "../ui/progress";
+import { auth } from "@/firebase";
 
 export const personalInfoFormSchema = z.object({
   fullname: z
     .string()
     .min(5, { message: "Name must be at least 5 characters" }),
   email: z.string().email("Must be a valid email address"),
-  dateOfBirth: z.coerce.date({
-    errorMap: () => ({ message: "Must be a valid date" }),
-  }).max(sub(new Date(), { years: 21 }), { message: "Must be at least 21 years"}),
+  dateOfBirth: z.coerce
+    .date({
+      errorMap: () => ({ message: "Must be a valid date" }),
+    })
+    .max(sub(new Date(), { years: 21 }), {
+      message: "Must be at least 21 years",
+    }),
   gender: z.string(),
 });
 
 type PersonaInfoFilter = Pick<
   RegistrationInfo,
-  "fullname" | "email" | "dateCreated" | "lastUpdated" | "gender" | "dateOfBirth"
+  | "fullname"
+  | "email"
+  | "dateCreated"
+  | "lastUpdated"
+  | "gender"
+  | "dateOfBirth"
 >;
 
 export type PersonalInfoFormFields = z.infer<typeof personalInfoFormSchema>;
-type ProfileRegistrationFormProps = {
-};
-export default function ProfileRegistrationForm({
-}: ProfileRegistrationFormProps) {
-  const {registration} = useRegistrationStore();
+type ProfileRegistrationFormProps = {};
+export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps) {
+  const { registration } = useRegistrationStore();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [showCropper, setShowCropper] = useState<boolean>(false);
@@ -93,14 +95,15 @@ export default function ProfileRegistrationForm({
     },
   });
 
-  useEffect(()=> {
-    if(registration){
-      console.log("setting registration", registration)
+  useEffect(() => {
+    if (registration) {
+      console.log("setting registration", registration);
       form.setValue("fullname", user?.displayName || registration.fullname);
-      registration.dateOfBirth && form.setValue("dateOfBirth", new Date(registration.dateOfBirth));
+      registration.dateOfBirth &&
+        form.setValue("dateOfBirth", new Date(registration.dateOfBirth));
       form.setValue("gender", registration.gender);
     }
-  }, [registration])
+  }, [registration]);
 
   const selectedPreviewUrl = useMemo(() => {
     if (!selectedFile) return "";
@@ -130,7 +133,10 @@ export default function ProfileRegistrationForm({
         path,
         (progress) => setProgress(progress),
         async (url) => {
-          await updateProfile(user, { photoURL: url });
+          const usr = auth.currentUser;
+          if (usr) {
+            await updateProfile(usr, { photoURL: url });
+          }
           await updateDocument(registrationPath, { photoURL: url });
           setProgress(0);
           setUploading(false);
@@ -148,7 +154,6 @@ export default function ProfileRegistrationForm({
           : { dateCreated: new Date().getTime() }),
         lastUpdated: new Date().getTime(),
         dateOfBirth: fields.dateOfBirth.getTime(),
-        
       };
       if (registration) {
         await updateDocument(registrationPath, newRegistration);
@@ -158,27 +163,23 @@ export default function ProfileRegistrationForm({
       setCroppedImageBlob(undefined);
       setSelectedFile(undefined);
       toast.toast({
-        title: "Saved!"
-      })
-
+        title: "Saved!",
+      });
     } catch (error) {
-      const err:any = error
+      const err: any = error;
       toast.toast({
         title: "Something went wrong while updating registration",
-        variant: 'destructive',
-        description: err?.message || "Unkown error"
-      })
-      
+        variant: "destructive",
+        description: err?.message || "Unkown error",
+      });
     } finally {
-      
       setSubmitting(false);
     }
-    
   };
   const cancleCrop = () => {
     setSelectedFile(undefined);
     setShowCropper(false);
-  }
+  };
   return (
     <Card>
       <CardHeader>
@@ -210,7 +211,9 @@ export default function ProfileRegistrationForm({
                   />
                 </Avatar>
               )}
-              {progress && uploading ? <Progress value={progress} className="my-4" /> : null}
+              {progress && uploading ? (
+                <Progress value={progress} className="my-4" />
+              ) : null}
               <input
                 accept="image/*"
                 type="file"
@@ -249,7 +252,11 @@ export default function ProfileRegistrationForm({
                 <FormItem className="mb-5">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="youremail@example.com" {...field} readOnly/>
+                    <Input
+                      placeholder="youremail@example.com"
+                      {...field}
+                      readOnly
+                    />
                   </FormControl>
                   <FormMessage className="tex-xs" />
                 </FormItem>
@@ -286,13 +293,17 @@ export default function ProfileRegistrationForm({
             <FormField
               control={form.control}
               name="dateOfBirth"
-              render={({ field: {value, onChange, ...rest} }) => (
+              render={({ field: { value, onChange, ...rest } }) => (
                 <FormItem className="mb-6 flex flex-col">
                   <FormLabel>Date of Birth</FormLabel>
-                  <Input type="date" value={value ? format(value, "yyyy-MM-dd" ): ""} placeholder="Your date of birth" {...rest} onChange={(e)=> onChange(new Date(e.target.value))} />
+                  <Input
+                    type="date"
+                    value={value ? format(value, "yyyy-MM-dd") : ""}
+                    placeholder="Your date of birth"
+                    {...rest}
+                    onChange={(e) => onChange(new Date(e.target.value))}
+                  />
 
-                  
-                   
                   <FormMessage className="text-xs" />
                 </FormItem>
               )}
