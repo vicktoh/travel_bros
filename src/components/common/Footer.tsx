@@ -26,12 +26,12 @@ const contactInformation = [
 ]
 const terminals = [
    {
-      label: 'Warri Terminal',
-      value: 'No 5, Asokoro Drive assokoro disstrict, in the house'
+      label: 'Jos Terminal',
+      value: 'No 5, Rwang Pam street, Jos, Plateau State'
    },
    {
       label: 'Abuja Office',
-      value: 'House FO2, 442 Crescent Citec Villas Gwarimpa'
+      value: 'House FO2, 442 Crescent Citec Villas Gwarimpa, Abuja Nigeria'
    },
    
 ]
