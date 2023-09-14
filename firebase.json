@@ -49,7 +49,6 @@
       }
 
     ],
-    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
