@@ -21,6 +21,35 @@
       "region": "europe-west1",
       "maxInstances": 2
     },
+    "redirects": [
+      {
+        "source": "/bookings",
+        "destination": "/bookings.html",
+        "type": 301
+      },
+      {
+        "source": "/drivers",
+        "destination": "/drivers.html",
+        "type": 301
+      },
+      {
+        "source": "/search",
+        "destination": "/search.html",
+        "type": 301
+      },
+      {
+        "source": "/drivers/signup",
+        "destination": "/drivers/signup.html",
+        "type": 301
+      },
+      {
+        "source": "/drivers/signin",
+        "destination": "/drivers/signin.html",
+        "type": 301
+      }
+
+    ],
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
