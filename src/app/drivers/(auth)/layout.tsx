@@ -66,10 +66,10 @@ export default function DriverClient({ children }: { children: ReactNode }) {
     return null;
   }
   return (
-    <div className="flex w-screen h-screen  max-h-screen lg:pl-[258px] overflow-y-auto mt-2 relative">
+    <div className="flex h-screen  max-h-screen lg:pl-[258px] overflow-y-auto mt-2 relative overflow-x-hidden">
       <DriverNavBar user={user} />
       <MobileNav user={user} />
-      <div className="flex flex-col flex-1 pb-20 md:pb-0">
+      <div className="flex flex-col flex-1 pt-24 md:pt-0  md:pb-0">
          {
             driver?.status === 'pending' ? <Alert variant="warning" className="mb-3">
                <LucideClock4 />

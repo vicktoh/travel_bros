@@ -17,7 +17,9 @@ type MobileNavProps = {
 export const MobileNav:FC<MobileNavProps> = ({user}) => {
    const path = usePathname();
   return (
-    <div className="flex flex-row md:hidden items-center fixed top-0 left-0 right-0 z-10 bg-white px-5 py-5 border bored-primary-foreground shadow">
+    <div className="md:hidden fixed top-0 left-0 right-0 z-10 bg-white  border bored-primary-foreground shadow">
+      <div className="flex flex-row items-center px-5 py-5">
+
       <Sheet>
         <SheetTrigger
           className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
@@ -28,7 +30,9 @@ export const MobileNav:FC<MobileNavProps> = ({user}) => {
           side="left"
           className="w-[240px] flex flex-col items-center "
         >
-          <SheetHeader className="text-brand">TravelBros Driver</SheetHeader>
+      <img src="images/logo.jpeg" alt="travel bro logo" className="w-[80px]" />
+
+          <SheetHeader className="text-brand font-bold">TravelBros Driver</SheetHeader>
           <nav className="flex flex-col justiy-center px-5 py-8 w-[140px] items-center h-full">
             <Avatar className="w-12 h-12">
               <AvatarFallback>
@@ -36,7 +40,7 @@ export const MobileNav:FC<MobileNavProps> = ({user}) => {
               </AvatarFallback>
               <AvatarImage src={user.photoURL || ""} />
             </Avatar>
-            <p className="text-base font-bold text-center mt-5">
+            <p className="text-sm font-medium text-center mt-5">
               {user.displayName || "Unknown user"}
             </p>
 
@@ -71,14 +75,15 @@ export const MobileNav:FC<MobileNavProps> = ({user}) => {
           </nav>
         </SheetContent>
       </Sheet>
-
-      <p className="mx-auto text-lg text-primary">{user.displayName}</p>
-      <Avatar className="w-8 h-8">
+      <p className="font-bold text-sm mx-auto text-primary">TravelBros Driver</p>
+      <Avatar className="w-8 h-8  mr-3">
         <AvatarFallback>
           {getInitials(user?.displayName || "Unknown user")}
         </AvatarFallback>
         <AvatarImage src={user.photoURL || ""} />
       </Avatar>
+      </div>
+
     </div>
   );
 }

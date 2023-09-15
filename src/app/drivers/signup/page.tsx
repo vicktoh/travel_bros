@@ -3,6 +3,8 @@ import SignupForm from './signup-form'
 import { getAuth } from 'firebase/auth'
 import { app } from '@/firebase'
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
+
 
 const redirectToHome = () => {
    const auth = getAuth(app);
@@ -15,7 +17,8 @@ export default function Signup() {
   return (
     <div className='h-screen w-screen bg-driver-image md:bg-gradient-linear'>
       <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
-         <div className="w-full flex flex-col items-center justify-center">
+         <div className="w-full flex flex-col items-center justify-center px-5 ">
+            
 
             <SignupForm />
 

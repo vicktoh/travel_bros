@@ -42,7 +42,9 @@ export default function DriverNavBar({ user }: DriverNavBarProps) {
    const path = usePathname()
   return (
     <nav className="flex-col hidden lg:flex px-5 py-8 border border-primary-foreground w-[240px] items-center left-2 rounded-lg fixed top-2 bottom-2">
-      <p className="text-base font-medium text-brand mb-6">
+
+      <img src="images/logo.jpeg" alt="travel bro logo" className="w-[80px]" />
+      <p className="text-base font-bold text-brand mb-6">
         TravelBros Drivers
       </p>
       <Avatar className="w-16 h-16">
@@ -51,7 +53,7 @@ export default function DriverNavBar({ user }: DriverNavBarProps) {
         </AvatarFallback>
         <AvatarImage src={user.photoURL || ""} />
       </Avatar>
-      <p className="text-base font-bold text-center mt-5">
+      <p className="text-base font-medium text-center mt-5">
         {user.displayName || "Unknown user"}
       </p>
 
