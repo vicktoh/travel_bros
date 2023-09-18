@@ -46,6 +46,11 @@
         "source": "/drivers/signin",
         "destination": "/drivers/signin.html",
         "type": 301
+      },
+      {
+        "source": "/drivers/terms",
+        "destination": "/drivers/terms.html",
+        "type": 301
       }
 
     ],

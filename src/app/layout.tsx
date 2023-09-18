@@ -11,7 +11,7 @@ const wfont = Work_Sans({
   variable:'--font-wfont'
 })
 export const metadata = {
-  title: 'TravleBros',
+  title: 'Travel Bros',
   description: 'Experience, safe, convienient and luxurious road travel',
 }
 
