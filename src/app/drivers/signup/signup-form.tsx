@@ -32,18 +32,19 @@ import Link from "next/link";
 import { FirebaseError } from "firebase/app";
 import { AuthError } from "firebase/auth";
 import { errorMap } from "@/services/constants";
-const signupFormSchema = z
-  .object({
-    fullname: z
-      .string()
-      .min(5, { message: "Name must be at least 5 characters" }),
-    email: z.string().email("Must be a valid email address"),
-    phone: z.string().regex(/^\d{11}$/, "Must be a valid phone number"),
-    password: z
-      .string()
-      .min(5, { message: "Password must be at least 5 characters" }),
-   terms: z.literal(true, { errorMap: ()=> ({message: "Please accept the terms and conditions"})})
-  })
+const signupFormSchema = z.object({
+  fullname: z
+    .string()
+    .min(5, { message: "Name must be at least 5 characters" }),
+  email: z.string().email("Must be a valid email address"),
+  phone: z.string().regex(/^\d{11}$/, "Must be a valid phone number"),
+  password: z
+    .string()
+    .min(5, { message: "Password must be at least 5 characters" }),
+  terms: z.literal(true, {
+    errorMap: () => ({ message: "Please accept the terms and conditions" }),
+  }),
+});
 
 export type SignupField = z.infer<typeof signupFormSchema>;
 export default function SignupForm() {
@@ -55,37 +56,41 @@ export default function SignupForm() {
   const router = useRouter();
   const { toast } = useToast();
   const onSignup = async (driver: z.infer<typeof signupFormSchema>) => {
-   try {
+    try {
       setSubmitting(true);
-      const {user} = await onRegisterDriver(driver);
-      if(user){
-         await createDBDriver(user.uid, driver);
+      const { user } = await onRegisterDriver(driver);
+      if (user) {
+        await createDBDriver(user.uid, driver);
       }
       setSubmitting(false);
-      router.push('/drivers');
-
-   }  catch (error) {
-      const err  = error as AuthError;
+      router.push("/drivers");
+    } catch (error) {
+      const err = error as AuthError;
       const mess = errorMap[err?.code] || "Unknown error";
-      console.log({err})
+      console.log({ err });
       toast({
-         title: "Could not register",
-         description: mess || "Unknown error please try again",
-         variant: 'destructive',
-      })
-   } finally{
+        title: "Could not register",
+        description: mess || "Unknown error please try again",
+        variant: "destructive",
+      });
+    } finally {
       setSubmitting(false);
-   }
+    }
   };
   return (
     <Card className="min-w-[40px]">
       <CardHeader>
-        <CardTitle className="text-brand">
-          Signup to Travel Bros Driver
-        </CardTitle>
-        <CardDescription>
-          Turn Your Car into a Luxury Experience
-        </CardDescription>
+        <div className="flex items-center">
+          <img src="/images/logo.jpeg" alt="logo" className="w-[80px]" />
+          <div className="flex flex-col gap-2">
+            <CardTitle className="text-brand">
+              Signup to Travel Bros Driver
+            </CardTitle>
+            <CardDescription>
+              Turn Your Car into a Luxury Experience
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
@@ -179,7 +184,13 @@ export default function SignupForm() {
                         htmlFor="terms2"
                         className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        I agree to the Terms of Service and Privacy Policy
+                        I agree to the{" "}
+                        <Link
+                          href="/drivers/terms/"
+                          className="text-bold text-primary"
+                        >
+                          Terms of Service and Privacy Policy
+                        </Link>
                       </label>
                     </div>
                   </FormControl>
