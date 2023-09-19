@@ -40,7 +40,10 @@ const signinFormSchema = z
   })
 
 export type SigninField = z.infer<typeof signinFormSchema>;
-export default function SigninForm() {
+export type SignFormProps = {
+  gotoForgotPassword: () => void;
+}
+export default function SigninForm({ gotoForgotPassword }: SignFormProps) {
   const form = useForm<z.infer<typeof signinFormSchema>>({
     resolver: zodResolver(signinFormSchema),
   });
@@ -115,6 +118,7 @@ export default function SigninForm() {
                         size="icon"
                         className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2"
                         variant="ghost"
+                        type="button"
                       >
                         {!showPassword ? <LucideEyeOff /> : <LucideEye />}
                       </Button>
@@ -124,6 +128,8 @@ export default function SigninForm() {
                 </FormItem>
               )}
             />
+
+            <p className="text-primary text-base text-right mt-3 mb-5 cursor-pointer" onClick={gotoForgotPassword}>Forgot Password?</p>
             
 
             <Button

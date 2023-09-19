@@ -158,6 +158,7 @@ export default function SignupForm() {
                         size="icon"
                         className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2"
                         variant="ghost"
+                        type="button"
                       >
                         {!showPassword ? <LucideEyeOff /> : <LucideEye />}
                       </Button>
