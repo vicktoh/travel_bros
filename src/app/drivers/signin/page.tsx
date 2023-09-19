@@ -3,6 +3,7 @@ import SignupForm from './signin-form'
 import { getAuth } from 'firebase/auth'
 import { app } from '@/firebase'
 import { redirect } from 'next/navigation'
+import FormContainer from './form-container'
 const redirectToHome = () => {
    const auth = getAuth(app);
    if(auth.currentUser){
@@ -21,7 +22,7 @@ export default function Signup() {
               <p className="text-3xl font-bold text-primary">Drivers</p>
             </div>
           </div>
-          <SignupForm />
+          <FormContainer />
         </div>
         <div className="hidden w-full bg-driver-image bg-center md:flex md:flex-col justify-end h-screen px-6 pb-6">
           <p className="text-7xl font-bold text-white max-w-[466px]">
