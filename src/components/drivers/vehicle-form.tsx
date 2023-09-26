@@ -47,7 +47,7 @@ export const vehicleFormSchema = z.object({
   yearOfManufacture: z
     .string()
     .min(1, { message: "Must be at least 5 characters" }),
-  vehicleIdentificationNumber: z
+  numberOfSeats: z
     .string()
     .min(1, { message: "Must be at least 5 characters" }),
   licensePlateNumber: z.string(),
@@ -281,12 +281,12 @@ export default function VehicleRegistration() {
               />
               <FormField
                 control={form.control}
-                name="vehicleIdentificationNumber"
+                name="numberOfSeats"
                 render={({ field }) => (
                   <FormItem className="mb-5">
-                    <FormLabel>Vechicle Identification Number</FormLabel>
+                    <FormLabel>Number of Passenger Seats</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your VIN" {...field} />
+                      <Input type="number" placeholder="Number of Seat" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs" />
                   </FormItem>

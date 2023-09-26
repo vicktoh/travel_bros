@@ -44,7 +44,7 @@ export interface RegistrationInfo {
    vehicleInformation: {
       model: string;
       yearOfManufacture: string;
-      vehicleIdentificationNumber: string;
+      numberOfSeats: string;
       licensePlateNumber: string;
       vehicleRegistrationNumber: string;
       registrationDocumentUrl: string;

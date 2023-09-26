@@ -129,7 +129,7 @@ export default function DriverLicenceForm() {
         
       };
       if (registration) {
-        await updateDocument(registrationPath, {"driversLicense": newRegistration.driverLicense});
+        await updateDocument(registrationPath, {"driverLicense": newRegistration.driverLicense});
       } else {
         await newDocument(registrationPath, newRegistration);
       }
