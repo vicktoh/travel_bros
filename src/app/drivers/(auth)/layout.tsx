@@ -19,7 +19,6 @@ import React, { ReactNode, useEffect, useState } from "react";
 
 export default function DriverClient({ children }: { children: ReactNode }) {
   const { user, setUser } = useAuthStore((state)=> ({ user: state.user, setUser: state.setUser }));
-  const [auth, setAuth] = useState<any>();
   const { setRegistration, registration } = useRegistrationStore();
   const { setDriver, driver } = useDriverStore();
   const router = useRouter();
@@ -39,7 +38,6 @@ export default function DriverClient({ children }: { children: ReactNode }) {
           photoURL: usr.photoURL || "",
         });
       }
-        console.log("I am running")
     });
 
     return unsub;
@@ -60,7 +58,6 @@ export default function DriverClient({ children }: { children: ReactNode }) {
     });
     return unsub;
   }, [user?.uid]);
-  console.log({user, auth})
   
   if (!user) {
     return null;
