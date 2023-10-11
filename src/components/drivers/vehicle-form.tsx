@@ -29,21 +29,11 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import {
-  newDocument,
-  updateDocument,
-  uploadDocument,
-} from "@/services/drivers";
-
-import { useToast } from "../ui/use-toast";
 import { Progress } from "../ui/progress";
-import { arrayUnion } from "firebase/firestore";
 import { Textarea } from "../ui/textarea";
-import { registrationMigration } from "../../../functions/src";
 import { registrationSchema } from "./vehicle-registration-modal";
 import { RegistrationInfoWithId } from "@/types/Admin";
-const  MIN_PHOTO_UPLOAD = 4;
-const  MAX_PHOTO_UPLOAD = 6;
+
 
 export const vehicleFormSchema = z.object({
   model: z.string().min(1, { message: "Must be at least 5 characters" }),
