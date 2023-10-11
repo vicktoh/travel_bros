@@ -10,3 +10,5 @@ export interface Vehicle {
 export interface VehicleWithID extends Vehicle {
    id: string;
 }
+
+export type VehicleStatus = "active" | "pending" | "unavailable" | "failed"

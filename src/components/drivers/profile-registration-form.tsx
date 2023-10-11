@@ -23,8 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useAuthStore, useRegistrationStore } from "@/states/drivers";
-import { RegistrationInfo, genders } from "@/types/Driver";
+import { useAuthStore, useDriverStore, useRegistrationStore } from "@/states/drivers";
+import { Driver, RegistrationInfo, genders } from "@/types/Driver";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, sub } from "date-fns";
 import { LucideLoader, LucidePencil } from "lucide-react";
@@ -62,10 +62,9 @@ export const personalInfoFormSchema = z.object({
 });
 
 type PersonaInfoFilter = Pick<
-  RegistrationInfo,
+  Driver,
   | "fullname"
   | "email"
-  | "dateCreated"
   | "lastUpdated"
   | "gender"
   | "dateOfBirth"
@@ -74,7 +73,7 @@ type PersonaInfoFilter = Pick<
 export type PersonalInfoFormFields = z.infer<typeof personalInfoFormSchema>;
 type ProfileRegistrationFormProps = {};
 export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps) {
-  const { registration } = useRegistrationStore();
+  const { driver } = useDriverStore()
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [showCropper, setShowCropper] = useState<boolean>(false);
@@ -86,24 +85,16 @@ export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps
   const form = useForm<z.infer<typeof personalInfoFormSchema>>({
     resolver: zodResolver(personalInfoFormSchema),
     defaultValues: {
-      fullname: registration?.fullname || user?.displayName || "",
-      email: registration?.email || user?.email || "",
-      gender: registration?.gender,
-      dateOfBirth: registration?.dateOfBirth
-        ? new Date(registration.dateOfBirth)
+      fullname: driver?.fullname || user?.displayName || "",
+      email: driver?.email || user?.email || "",
+      gender: driver?.gender,
+      dateOfBirth: driver?.dateOfBirth
+        ? new Date(driver.dateOfBirth)
         : undefined,
     },
   });
 
-  useEffect(() => {
-    if (registration) {
-      console.log("setting registration", registration);
-      form.setValue("fullname", user?.displayName || registration.fullname);
-      registration.dateOfBirth &&
-        form.setValue("dateOfBirth", new Date(registration.dateOfBirth));
-      form.setValue("gender", registration.gender);
-    }
-  }, [registration]);
+  
 
   const selectedPreviewUrl = useMemo(() => {
     if (!selectedFile) return "";
@@ -123,7 +114,7 @@ export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps
 
   const onSavePersonalInfoForm = async (fields: PersonalInfoFormFields) => {
     if (!user?.uid) return;
-    const registrationPath = `registration/${user.uid}`;
+    const driversPath = `drivers/${user.uid}`;
     if (croppedImageBlob) {
       const path = `profiles/${user.uid}`;
 
@@ -137,7 +128,7 @@ export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps
           if (usr) {
             await updateProfile(usr, { photoURL: url });
           }
-          await updateDocument(registrationPath, { photoURL: url });
+          await updateDocument(driversPath, { photoURL: url });
           setProgress(0);
           setUploading(false);
         },
@@ -145,20 +136,17 @@ export default function ProfileRegistrationForm({}: ProfileRegistrationFormProps
     }
     try {
       setSubmitting(true);
-      const newRegistration: PersonaInfoFilter = {
+      const userInfo: PersonaInfoFilter = {
         fullname: fields.fullname,
         email: fields.email,
         gender: fields.gender as any,
-        ...(registration?.dateCreated
-          ? {}
-          : { dateCreated: new Date().getTime() }),
         lastUpdated: new Date().getTime(),
         dateOfBirth: fields.dateOfBirth.getTime(),
       };
-      if (registration) {
-        await updateDocument(registrationPath, newRegistration);
+      if (driver) {
+        await updateDocument(driversPath, userInfo);
       } else {
-        await newDocument(registrationPath, newRegistration);
+        await newDocument(driversPath, userInfo);
       }
       setCroppedImageBlob(undefined);
       setSelectedFile(undefined);

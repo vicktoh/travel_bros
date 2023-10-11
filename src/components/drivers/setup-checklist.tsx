@@ -55,8 +55,8 @@ export default function SetupChecklist() {
   const completeList = useMemo(() => {
     if (!registration) return [];
 
-    const list = isRegistrationComplete(registration);
-    return [list.contactInfo && list.personalInfo, list.vehicleInfo, false];
+    const list = isRegistrationComplete(driver || {});
+    return [list.contactInfo && list.personalInfo, registration, driver?.status === "active"];
   }, [registration]);
   return (
     <Card className="w-full">

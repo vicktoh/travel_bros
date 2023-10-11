@@ -1,3 +1,5 @@
+import { VehicleStatus } from "./Vehicle";
+
 export type DriverStatus = 'onboarded' | 'pending' | 'active' | 'completed';
 export type InfoStatus = 'empty' | 'rejected' | 'pending' | 'complete';
 export interface Driver {
@@ -8,24 +10,12 @@ export interface Driver {
    totalEarned?: number;
    totalTrips?: number;
    rating?: string;
-   
-}
-export const genders = ["male", "female"] as const;
-export interface RegistrationInfo {
-   userId: string;
-   dateCreated?: number;
-   lastUpdated?: number;
-   fullname: string;
-   email:string;
-   dateOfBirth: number;
-   gender: typeof genders[number];
    contact: {
       address: string;
       phoneNumber: string;
       city: string;
       state: string;
    },
-   photoURL: string;
    nextOfKinContact: {
       name: string;
       address: string;
@@ -33,6 +23,18 @@ export interface RegistrationInfo {
       relationship: string;
    
    },
+   dateOfBirth: number;
+   gender: typeof genders[number];
+   lastUpdated: number
+   
+}
+export const genders = ["male", "female"] as const;
+export interface RegistrationInfo {
+   userId: string;
+   dateCreated?: number;
+   lastUpdated?: number;
+   readCount?: number;
+   messageCount?: number;
    driverLicense: {
       driverLicenseNumber: string;
       dateIssued: string;
@@ -52,6 +54,7 @@ export interface RegistrationInfo {
       photos: string[]
       employmentHistory: string;
    }
+   status: VehicleStatus
 }
 
 

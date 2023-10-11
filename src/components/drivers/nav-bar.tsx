@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User } from "firebase/auth";
 import { getInitials } from "@/services/utils";
-import { LucideCog, LucideCreditCard, LucideHistory, LucideHome, LucidePower, LucideUser2 } from "lucide-react";
+import { LucideCarFront, LucideCog, LucideCreditCard, LucideHistory, LucideHome, LucidePower, LucideUser2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
@@ -26,6 +26,11 @@ export const menuItems: MenuItem[] = [
       title: "Trips",
       icon: <LucideHistory />,
       path: "/drivers/history"
+   },
+   {
+      title: "Vehicles",
+      icon: <LucideCarFront />,
+      path: "/drivers/vehicles"
    },
    {
       title: "Profile",
