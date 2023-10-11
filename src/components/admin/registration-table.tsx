@@ -93,7 +93,7 @@ export default function RegistrationTable() {
           ) : registrations?.length ? (
             registrations.map((reg) => (
               <TableRow>
-                <TableCell>{reg.fullname}</TableCell>
+                {/* <TableCell>{reg.fullname}</TableCell> */}
                 <TableCell>
                   {reg.vehicleInformation
                     ? `${reg.vehicleInformation.yearOfManufacture} ${reg.vehicleInformation.model}`

@@ -37,16 +37,6 @@ const menuItems: RegistrationMenuItem[] = [
     icon: <LucideContact className="w-4 h-4 mr-1" />,
     path: "contact",
   },
-  {
-    title: "Driver's License",
-    icon: <LucideCreditCard className="w-4 h-4 mr-1" />,
-    path: "license",
-  },
-  {
-    title: "Vehicle Info",
-    icon: <LucideCarFront className="w-4 h-4 mr-1" />,
-    path: "vehicle",
-  },
 ];
 export default function RegistrationLayout({
   children,

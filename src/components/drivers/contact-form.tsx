@@ -17,7 +17,7 @@ import {
 
 
 import { useAuthStore, useDriverStore, useRegistrationStore } from "@/states/drivers";
-import { RegistrationInfo } from "@/types/Driver";
+import { Driver, RegistrationInfo } from "@/types/Driver";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -32,7 +32,6 @@ import {
 } from "@/services/drivers";
 
 import { useToast } from "../ui/use-toast";
-import { Progress } from "../ui/progress";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 
@@ -52,14 +51,13 @@ export const contactFormSchema = z.object({
 });
 
 type ContactInfoFilter = Pick<
-  RegistrationInfo,
+  Driver,
   "contact" | "nextOfKinContact" | "lastUpdated"
 >;
 
 export type ContactInfoFormFields = z.infer<typeof contactFormSchema>;
 
 export default function ContactRegistrationForm() {
-  const {registration} = useRegistrationStore();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const { user } = useAuthStore();
@@ -68,20 +66,12 @@ export default function ContactRegistrationForm() {
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      contact:{
-         phoneNumber: user?.phoneNumber || undefined
-      }
+      contact:driver?.contact,
+      nextOfKinContact: driver?.nextOfKinContact,
     },
   });
 
-  useEffect(()=> {
-    if(registration){
-      console.log("setting registration", registration)
-      registration.contact && form.setValue("contact", registration.contact);
-      registration?.contact?.phoneNumber && form.setValue("contact.phoneNumber", registration.contact.phoneNumber);
-      registration.nextOfKinContact && form.setValue("nextOfKinContact",registration.nextOfKinContact );
-    }
-  }, [registration])
+  
 
 
 
@@ -89,23 +79,20 @@ export default function ContactRegistrationForm() {
 
   const onSaveContactForm = async (fields: ContactInfoFormFields) => {
     if (!user?.uid) return;
-    const registrationPath = `registration/${user.uid}`;
+    const driversPath = `drivers/${user.uid}`;
     
     try {
       setSubmitting(true);
-      const newRegistration: ContactInfoFilter = {
+      const userInfo: ContactInfoFilter = {
         contact: fields.contact,
         nextOfKinContact: fields.nextOfKinContact,
-        ...(registration?.dateCreated
-          ? {}
-          : { dateCreated: new Date().getTime() }),
         lastUpdated: new Date().getTime(),
         
       };
-      if (registration) {
-        await updateDocument(registrationPath, newRegistration);
+      if (driver) {
+        await updateDocument(driversPath, userInfo);
       } else {
-        await newDocument(registrationPath, newRegistration);
+        await newDocument(driversPath, userInfo);
       }
       toast.toast({
         title: "Saved!"
@@ -267,7 +254,7 @@ export default function ContactRegistrationForm() {
               size="lg"
               className="text-white w-full mt-5"
               type="submit"
-              disabled={driver?.status === "pending" || submitting || !form.formState.isValid}
+              disabled={submitting || !form.formState.isValid}
             >
               {submitting ? (
                 <LucideLoader className="w-4 h-4 animate-spin text-white" />

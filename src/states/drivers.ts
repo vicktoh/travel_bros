@@ -18,14 +18,28 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
    logOut: () => set((state) => ({ ...state, user: null})),
 }))
 type RegistrationState = {
-   registration: RegistrationInfo | null,
-   setRegistration: (registration: RegistrationInfo | null) => void;
+   registration: boolean | null,
+   setRegistration: (registration: boolean | null) => void;
 
 }
+type ConfirmedRegistrationState = {
+   confirmed: boolean | null,
+   setConfirmed: (confirmed: boolean | null) => void;
+
+}
+export const useConfirmRegistrationStore = create<ConfirmedRegistrationState>()((set)=> ({
+   confirmed: null,
+   setConfirmed: (confirmed: boolean | null) => set((state) => ({...state, confirmed})),
+}))
 export const useRegistrationStore = create<RegistrationState>()((set)=> ({
    registration: null,
-   setRegistration: (registration: RegistrationInfo | null) => set((state) => ({...state, registration})),
+   setRegistration: (registration: boolean | null) => set((state) => ({...state, registration})),
 }))
+export const vehicleStatus = create<RegistrationState>()((set)=> ({
+   registration: null,
+   setRegistration: (registration: boolean | null) => set((state) => ({...state, registration})),
+}))
+
 
 type DriverState = {
    driver: Driver | null,

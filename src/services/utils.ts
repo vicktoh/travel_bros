@@ -1,8 +1,11 @@
 import { contactFormSchema } from "@/components/drivers/contact-form";
-import { licenseFormSchema } from "@/components/drivers/license-form";
+
 import { personalInfoFormSchema } from "@/components/drivers/profile-registration-form";
 import { vehicleFormSchema } from "@/components/drivers/vehicle-form";
-import { RegistrationInfo } from "@/types/Driver";
+import { licenseFormSchema } from "@/components/drivers/vehicle-registration-modal";
+import { db } from "@/firebase";
+import { Driver, RegistrationInfo } from "@/types/Driver";
+import { collection, doc } from "firebase/firestore";
 import { Crop } from "react-image-crop";
 
 export const formatNumber = (number: number, currency?: 'NGN' | 'USD') => {
@@ -52,25 +55,25 @@ export const getInitials = (displayName: string) => {
     });
   };
 
-  export const isRegistrationComplete = (registration: RegistrationInfo) => {
-    const personalInfoStatus = personalInfoFormSchema.safeParse(registration);
-    const contactInfoStatus = contactFormSchema.safeParse({contact: registration.contact, nextOfKinContact: registration.nextOfKinContact});
-    const licenseInfoStatus = licenseFormSchema.safeParse(registration.driverLicense);
-    const vehicleInfoStatus = vehicleFormSchema.safeParse(registration.vehicleInformation);
+  export const isRegistrationComplete = (driver: Partial<Driver>) => {
+    const personalInfoStatus = personalInfoFormSchema.safeParse(driver);
+    const contactInfoStatus = contactFormSchema.safeParse({contact: driver?.contact, nextOfKinContact: driver?.nextOfKinContact});
+  
     const isComplete = (
       personalInfoStatus.success &&
-      contactInfoStatus.success &&
-      licenseInfoStatus &&
-      vehicleInfoStatus.success
+      contactInfoStatus.success
     )
     return  {
       personalInfo: personalInfoStatus.success,
       contactInfo: contactInfoStatus.success,
-      licenseInfo: licenseInfoStatus.success,
-      vehicleInfo: vehicleInfoStatus.success,
       isComplete,
     };
 
 
 
+  }
+
+  export const newRegistration = () => {
+    return doc(collection(db, "registration"))
+    
   }
