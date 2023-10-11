@@ -18,77 +18,78 @@ export const RegistrationOverView: FC<RegistrationOverViewProps> = ({
    const [loading, setLoading] = useState<boolean>(false);
    const {toast} = useToast();
    const contactInformation =  () => {
-      if(!reg.contact || !reg.nextOfKinContact) return null;
-      return (
-         <>
-         <div className="flex items-start gap-2 mb-5">
-        <Avatar className="w-16 h-16 mb-2">
-          <AvatarFallback>{getInitials(reg.fullname)}</AvatarFallback>
-          <AvatarImage src={reg.photoURL} />
-        </Avatar>
-        <div className="flex flex-col">
-          <p className="text-base font-medium">{reg.fullname}</p>
-          <p className="text-sm text-slate-600">{`registered on ${
-            reg.dateCreated ? format(reg.dateCreated, "ddd MMM yyyy") : "-"
-          }`}</p>
-        </div>
-      </div>
+      // if(!reg.contact || !reg.nextOfKinContact) return null;
+      // return (
+      //    <>
+      //    <div className="flex items-start gap-2 mb-5">
+      //   <Avatar className="w-16 h-16 mb-2">
+      //     <AvatarFallback>{getInitials(reg.fullname)}</AvatarFallback>
+      //     <AvatarImage src={reg.photoURL} />
+      //   </Avatar>
+      //   <div className="flex flex-col">
+      //     <p className="text-base font-medium">{reg.fullname}</p>
+      //     <p className="text-sm text-slate-600">{`registered on ${
+      //       reg.dateCreated ? format(reg.dateCreated, "ddd MMM yyyy") : "-"
+      //     }`}</p>
+      //   </div>
+      // </div>
 
-      <p className="text-base font-bold">Contact Information</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 my-3">
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Fullname</p>
-            <p className="text-base">{reg.fullname}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Email</p>
-            <p className="text-base">{reg.email}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Date of Birth</p>
-            <p className="text-base">{reg.dateOfBirth && format(reg.dateOfBirth, "ddd MMM yyyy")}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Phone Number</p>
-            <p className="text-base">{reg.contact.phoneNumber}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">City</p>
-            <p className="text-base">{reg.contact.city}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">State</p>
-            <p className="text-base">{reg.contact.state}</p>
-         </div>
-         <div className="flex flex-col col-span-2 md:col-span-3">
-            <p className="text-sm font-bold text-slate-500">Address</p>
-            <p className="text-base">{reg.contact.address}</p>
-         </div>
-      </div>
-      <p className="text-base font-bold">Next of Kin Contact Information</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 my-3">
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Fullname</p>
-            <p className="text-base">{reg.nextOfKinContact.name}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Phone Number</p>
-            <p className="text-base">{reg.nextOfKinContact.phoneNumber}</p>
-         </div>
-         <div className="flex flex-col">
-            <p className="text-sm font-bold text-slate-500">Relationship</p>
-            <p className="text-base">{reg.nextOfKinContact.relationship}</p>
-         </div>
+      // <p className="text-base font-bold">Contact Information</p>
+      // <div className="grid grid-cols-2 md:grid-cols-3 gap-5 my-3">
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Fullname</p>
+      //       <p className="text-base">{reg.fullname}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Email</p>
+      //       <p className="text-base">{reg.email}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Date of Birth</p>
+      //       <p className="text-base">{reg.dateOfBirth && format(reg.dateOfBirth, "ddd MMM yyyy")}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Phone Number</p>
+      //       <p className="text-base">{reg.contact.phoneNumber}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">City</p>
+      //       <p className="text-base">{reg.contact.city}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">State</p>
+      //       <p className="text-base">{reg.contact.state}</p>
+      //    </div>
+      //    <div className="flex flex-col col-span-2 md:col-span-3">
+      //       <p className="text-sm font-bold text-slate-500">Address</p>
+      //       <p className="text-base">{reg.contact.address}</p>
+      //    </div>
+      // </div>
+      // <p className="text-base font-bold">Next of Kin Contact Information</p>
+      // <div className="grid grid-cols-2 md:grid-cols-3 gap-5 my-3">
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Fullname</p>
+      //       <p className="text-base">{reg.nextOfKinContact.name}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Phone Number</p>
+      //       <p className="text-base">{reg.nextOfKinContact.phoneNumber}</p>
+      //    </div>
+      //    <div className="flex flex-col">
+      //       <p className="text-sm font-bold text-slate-500">Relationship</p>
+      //       <p className="text-base">{reg.nextOfKinContact.relationship}</p>
+      //    </div>
          
-         <div className="flex flex-col col-span-2 md:col-span-3">
-            <p className="text-sm font-bold text-slate-500">Address</p>
-            <p className="text-base">{reg.contact.address}</p>
-         </div>
+      //    <div className="flex flex-col col-span-2 md:col-span-3">
+      //       <p className="text-sm font-bold text-slate-500">Address</p>
+      //       <p className="text-base">{reg.contact.address}</p>
+      //    </div>
         
 
-      </div>
-         </>
-      )
+      // </div>
+      //    </>
+      // )
+      return <></>
    }
    const licenceInformation = () => {
       if(!reg.driverLicense) return null;
