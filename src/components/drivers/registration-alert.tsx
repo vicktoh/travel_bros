@@ -9,13 +9,13 @@ import { useToast } from "../ui/use-toast";
 import { sendRegForApproval } from "@/services/drivers";
 
 export default function RegistrationAlert() {
-  const { registration } = useRegistrationStore();
+  const { driver } = useDriverStore();
   const [sending, setSending] = useState<boolean>(false);
   const {toast} = useToast();
   const isComplete = useMemo(() => {
-    if (!registration) return false;
-    return isRegistrationComplete(registration).isComplete;
-  }, [registration]);
+    if (!driver) return false;
+    return isRegistrationComplete(driver).isComplete;
+  }, [driver]);
 
   const sendRegistrationForApproval = async () => {
    try {
