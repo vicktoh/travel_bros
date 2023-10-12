@@ -20,6 +20,7 @@ import { InfoStatus } from '@/types/Driver';
 import { Empty } from '../drivers/empty-state';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { RegistrationOverView } from './registration-view';
+import { DriverInfoModal } from './driver-modal';
 const STATUS_COLORS: Record<InfoStatus, {title: string, className: string}> = {
    "complete": {
       title: "not submitted",
@@ -43,10 +44,15 @@ export default function RegistrationTable() {
    const [loading, setLoading] = useState(false);
    const [selectedReg, setSelectedReg] = useState<RegistrationInfoWithId>();
    const [isModalOpen, setModalOpen] = useState(false);
+   const [isContactModalOpen, setContactModalOpen] = useState(false);
 
    const onViewRegistration = (registration: RegistrationInfoWithId) => {
       setSelectedReg(registration);
       setModalOpen(true);
+   }
+   const onViewRegContact = (registration: RegistrationInfoWithId)=> {
+    setSelectedReg(registration);
+    setContactModalOpen(true);
    }
    const {toast} = useToast();
    useEffect(()=> {
@@ -73,7 +79,6 @@ export default function RegistrationTable() {
         <TableCaption>Driver Registration Info</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
             <TableHead>Car Brand</TableHead>
             <TableHead>Date Submitted</TableHead>
             <TableHead>Status</TableHead>
@@ -119,6 +124,15 @@ export default function RegistrationTable() {
                   >
                     View Info
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border border-primary-light ml-2"
+                    type="button"
+                    onClick={() => onViewRegContact(reg)}
+                  >
+                    Contact Info
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
@@ -132,14 +146,21 @@ export default function RegistrationTable() {
         </TableBody>
       </Table>
       <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
-        <DialogContent  className="w-full max-w-[800px] h-screen overflow-x-hidden">
-          <DialogHeader className='sticky top-0 bg-white'>
+        <DialogContent className="w-full max-w-[800px] h-screen overflow-x-hidden">
+          <DialogHeader className="sticky top-0 bg-white">
             <DialogTitle>Driver Registration Info</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
-        {selectedReg && <RegistrationOverView reg={selectedReg} />}
+          {selectedReg && <RegistrationOverView reg={selectedReg} />}
         </DialogContent>
       </Dialog>
+      {selectedReg?.userId && (
+        <DriverInfoModal
+          driverId={selectedReg.userId}
+          isOpen={isContactModalOpen}
+          setOpen={setContactModalOpen}
+        />
+      )}
     </>
   );
 }

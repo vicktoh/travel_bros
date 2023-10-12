@@ -13,7 +13,7 @@ export const Empty: FC<LoadingProps> = ({ title, description }) => {
         src="https://lottie.host/62e82b79-0af8-4cd2-84e5-f82410d09c03/J0zYeqZrnY.json"
         style={{ height: "300px", width: "242" }}
       ></Player>
-      <p className="text-base font-bold text-primary my-3">{title}</p>
+      <p className="text-base font-bold text-primary my-3 max-w-[60%]">{title}</p>
       {description && <p className="text-xs">{description}</p> }
     </div>
   );

@@ -67,9 +67,9 @@ export default function DriverClient({ children }: { children: ReactNode }) {
     <div className="flex h-screen  max-h-screen lg:pl-[258px] overflow-y-auto mt-2 relative overflow-x-hidden">
       <DriverNavBar user={user} />
       <MobileNav user={user} />
-      <div className="flex flex-col flex-1 pt-24 md:pt-0  md:pb-0 w-full relative">
+      <div className="flex flex-col flex-1 pt-24  md:pb-0 w-full relative">
         {driver?.status === "pending" ? (
-          <Alert variant="warning" className="mb-3">
+          <Alert variant="warning" className="mb-3 ml-4">
             <LucideClock4 />
             <AlertTitle>Account under reiview</AlertTitle>
             <AlertDescription>

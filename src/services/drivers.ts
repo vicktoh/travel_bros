@@ -4,6 +4,7 @@ import { app, auth, db } from "@/firebase";
 import { useAuthStore, useDriverStore } from "@/states/drivers";
 import { RegistrationInfoWithId } from "@/types/Admin";
 import { Driver, RegistrationInfo } from "@/types/Driver";
+import { NotificationWithId } from "@/types/System";
 import {
   User,
   createUserWithEmailAndPassword,
@@ -173,3 +174,18 @@ export const listenOnMyDriverRegistration = (
     },
   );
 };
+
+export const listenOnNotifications = (userId: string, callback: (notifications: NotificationWithId[]) => void, onError?: (error:string) => void) => {
+  const notificationRef = query(collection(db, `drivers/${userId}/notifications`), orderBy("timestamp", "desc"), limit(50))
+  return onSnapshot(notificationRef, (snapshot) => {
+    const nots: NotificationWithId[] = [];
+    snapshot.forEach((snap) => {
+      const not = snap.data() as NotificationWithId
+      not.id = snap.id
+      nots.push(not);
+    });
+    callback(nots);
+  }, (error) => {
+    onError && onError(error.message);
+  })
+}
