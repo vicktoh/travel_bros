@@ -16,6 +16,7 @@ export interface Driver {
       city: string;
       state: string;
    },
+   readCount?: number;
    nextOfKinContact: {
       name: string;
       address: string;
@@ -56,5 +57,7 @@ export interface RegistrationInfo {
    }
    status: VehicleStatus
 }
+
+
 
 
