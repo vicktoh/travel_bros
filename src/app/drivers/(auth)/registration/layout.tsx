@@ -3,17 +3,11 @@ import RegistrationAlert from "@/components/drivers/registration-alert";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { listenOnRegistration } from "@/services/drivers";
 import {
-  useAuthStore,
-  useDriverStore,
-  useRegistrationStore,
 } from "@/states/drivers";
 import {
-  LucideCarFront,
   LucideContact,
-  LucideCreditCard,
-  LucideIcon,
+
   LucideUserSquare,
 } from "lucide-react";
 import Link from "next/link";
@@ -44,14 +38,9 @@ export default function RegistrationLayout({
   children: ReactNode;
 }) {
   const currpath = usePathname().split("/").pop();
-  const { driver } = useDriverStore();
   return (
     <>
-    {!driver?.status || driver.status === "onboarded" ? (
-        <RegistrationAlert />
-      ) : null}
     <Card className="flex  flex-col w-full relative">
-      
       <CardHeader>
         <CardTitle>Registration</CardTitle>
       </CardHeader>

@@ -2,6 +2,7 @@
 
 import { MobileNav } from "@/components/drivers/mobile-nav";
 import DriverNavBar from "@/components/drivers/nav-bar";
+import RegistrationAlert from "@/components/drivers/registration-alert";
 import TopNav from "@/components/drivers/topnav";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -68,6 +69,9 @@ export default function DriverClient({ children }: { children: ReactNode }) {
       <DriverNavBar user={user} />
       <MobileNav user={user} />
       <div className="flex flex-col flex-1 pt-24  md:pb-0 w-full relative">
+      {!driver?.status || driver.status === "onboarded" ? (
+        <RegistrationAlert />
+      ) : null}
         {driver?.status === "pending" ? (
           <Alert variant="warning" className="mb-3 ml-4">
             <LucideClock4 />

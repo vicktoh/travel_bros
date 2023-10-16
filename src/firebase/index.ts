@@ -8,6 +8,16 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const appEnv = process.env.NEXT_PUBLIC_APP_ENV!
+
+const devFirebaseConfig =  {
+  apiKey: "AIzaSyADHBk_sQmhdSDAKM18r4tmaatWcWCSnCk",
+  authDomain: "travel-bros-dev.firebaseapp.com",
+  projectId: "travel-bros-dev",
+  storageBucket: "travel-bros-dev.appspot.com",
+  messagingSenderId: "937039897523",
+  appId: "1:937039897523:web:ecf1d010f39358c9dee1c6"
+};
 const firebaseConfig = {
   apiKey: "AIzaSyCI5bEBRgsHCfZTu33jABfWF6I4uuqvl_U",
   authDomain: "travel-bros.firebaseapp.com",
@@ -21,6 +31,6 @@ const firebaseConfig = {
 } as FirebaseOptions;
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(appEnv === "dev"? devFirebaseConfig : firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);

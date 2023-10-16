@@ -8,11 +8,14 @@ import Link from "next/link";
 import { LucideCheck, LucideFileX, LucideLoader2 } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import { approveRegistration } from "@/services/admin";
+import { VehicleApprovalForm } from "./vehicle-approval-form";
 type RegistrationOverViewProps = {
   reg: RegistrationInfoWithId;
+  onCloseModal?: ()=> void;
 };
 export const RegistrationOverView: FC<RegistrationOverViewProps> = ({
   reg,
+  onCloseModal
 }) => {
    const [step, setStep] = useState<number>(0);
    const [loading, setLoading] = useState<boolean>(false);
@@ -155,8 +158,13 @@ export const RegistrationOverView: FC<RegistrationOverViewProps> = ({
         </>
       );
    }
+   const approvalForm = ()=> {
+    return (
+      <VehicleApprovalForm  registration={reg} onCloseModal={onCloseModal} />
+    );
+   }
    const next = ()=> {
-      setStep((step) => Math.min(step + 1, 1))
+      setStep((step) => Math.min(step + 1, 2))
    }
    const prev = ()=> {
       setStep((step) => Math.max(step - 1, 0 ))
@@ -164,39 +172,10 @@ export const RegistrationOverView: FC<RegistrationOverViewProps> = ({
    const renderMap: Record<number, ()=> React.JSX.Element | null> = {
       0: licenceInformation,
       1: vehicleInformation,
+      2: approvalForm,
    }
 
-   const onApproveRegistration = async () => {
-      try {
-         setLoading(true);
-         const param: ApproveRegParams = {
-          reg,
-          from: 'jos',
-          to: 'abuja',
-         };
-         const {data} = await approveRegistration(param);
-         if(data.status === 200){
-          toast({
-            title: "Registration approved",
-          });
-         } else{
-          toast({
-            title: data.message || "Unknown Error",
-            variant: 'destructive',
-          });
-         }
-         /// call function
-      } catch (error) {
-         const err: any = error;
-         toast({
-            title: "Could not approve registration",
-            variant: "destructive",
-            description: err.message || "unknown error occurred",
-         });
-      } finally {
-         setLoading(false);
-      }
-   }
+   
   return (
     <div className="flex flex-col w-full">
       {renderMap[step]()}
@@ -221,19 +200,7 @@ export const RegistrationOverView: FC<RegistrationOverViewProps> = ({
           Next
         </Button>
       </div>
-      <Button
-        onClick={onApproveRegistration}
-        className="bg-green-500 text-white mt-5"
-      >
-        {loading ? (
-          <LucideLoader2 className="animate-spin text-white " />
-        ) : (
-          <>
-            {" "}
-            <LucideCheck /> Approve Registration
-          </>
-        )}
-      </Button>
+      
     </div>
   );
 };

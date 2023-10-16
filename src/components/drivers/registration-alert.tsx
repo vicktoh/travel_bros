@@ -10,6 +10,7 @@ import { sendRegForApproval } from "@/services/drivers";
 
 export default function RegistrationAlert() {
   const { driver } = useDriverStore();
+  const { registration } = useRegistrationStore();
   const [sending, setSending] = useState<boolean>(false);
   const {toast} = useToast();
   const isComplete = useMemo(() => {
@@ -45,20 +46,20 @@ export default function RegistrationAlert() {
   }
   return (
     <Alert className="mb-5 mx-8 self-center" variant="info">
-      {isComplete ? (
+      {isComplete && registration ? (
         <LucideRocket  />
       ) : (
         <LucideInfo  />
       )}
       <AlertTitle>
-        {isComplete ? "Ready for review" : "Incomplete Registration"}
+        {isComplete && registration ? "Ready for review" : "Incomplete Registration"}
       </AlertTitle>
       <AlertDescription>
-        {isComplete
+        {isComplete && registration
           ? "You have completed all forms of registration, click submit to send your registration for approval"
           : "Please complete all forms of registration to send your registration for approval"}
 
-        {isComplete ? (
+        {isComplete && registration ? (
           <Button
             size="sm"
             className="border-primary self-end text-primary ml-5"

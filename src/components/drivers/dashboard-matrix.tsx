@@ -4,6 +4,7 @@ import { Driver, DriverStatus, InfoStatus } from '@/types/Driver'
 import { CheckCircle, LucideBadgeCheck, LucideCar, LucideCheckCheck, LucideClock2, LucideDollarSign, LucideMinusCircle, LucideStar } from 'lucide-react'
 import React, { FunctionComponent, ReactNode, useMemo } from 'react'
 
+
 const AccountStatusIcon: Record<DriverStatus, ReactNode> = {
    'active': <LucideBadgeCheck className='w-4 h-4 text-green-500' />,
    'onboarded': <LucideMinusCircle className='w-4 h-4 text-orange-300' />,

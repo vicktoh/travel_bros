@@ -57,7 +57,8 @@ export default function SetupChecklist() {
 
     const list = isRegistrationComplete(driver || {});
     return [list.contactInfo && list.personalInfo, registration, driver?.status === "active"];
-  }, [registration]);
+  }, [registration, driver]);
+  if(completeList.every((item)=> item === true)) return null;
   return (
     <Card className="w-full">
       <CardHeader>
