@@ -7,4 +7,5 @@ export type ApproveRegParams = {
    time?: string;
    from: string;
    to: string;
+   noOfSeats: number;
  }

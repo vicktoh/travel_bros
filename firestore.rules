@@ -1,8 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    match /vehicles/{vehicleId} {
+      allow read:  if true;
+      allow write: if request.auth.uid != null;
+    }
+    match /bookings/{bookingId} {
+      allow read:  if true;
+      allow write: if request.auth.uid != null;
+    }
+    match /placements/{placementId}{
+       allow read, write: if true
+    }
+    match /confirmed/{confirmId}{
+    allow read: if true;
+    allow write: if request.auth.uid != null;
+    }
+    match /drivers/{driverId}{
+    		allow read, write: if request.auth.uid == driverId || request.auth.token.admin == true;
+        match/notifications/{notificationId}{
+         allow read, write: if request.auth.uid == driverId;
+        }
+    }
+    match /registration/{regId}{
+    		allow write: if request.resource.data.userId == request.auth.uid || request.auth.token.admin == true;
+        allow  read: if request.auth.uid != null;
     }
   }
 }

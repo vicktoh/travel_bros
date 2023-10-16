@@ -66,39 +66,39 @@ export const DriverInfoModal: FunctionComponent<DriverInfoModalProps> = ({ drive
          </div>
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">Phone Number</p>
-            <p className="text-base">{driverInfo.contact.phoneNumber}</p>
+            <p className="text-base">{driverInfo?.contact?.phoneNumber}</p>
          </div>
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">City</p>
-            <p className="text-base">{driverInfo.contact.city}</p>
+            <p className="text-base">{driverInfo?.contact?.city}</p>
          </div>
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">State</p>
-            <p className="text-base">{driverInfo.contact.state}</p>
+            <p className="text-base">{driverInfo.contact?.state}</p>
          </div>
          <div className="flex flex-col col-span-2 md:col-span-3">
             <p className="text-sm font-bold text-slate-500">Address</p>
-            <p className="text-base">{driverInfo.contact.address}</p>
+            <p className="text-base">{driverInfo.contact?.address}</p>
          </div>
       </div>
       <p className="text-base font-bold">Next of Kin Contact Information</p>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-5 my-3">
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">Fullname</p>
-            <p className="text-base">{driverInfo.nextOfKinContact.name}</p>
+            <p className="text-base">{driverInfo.nextOfKinContact?.name}</p>
          </div>
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">Phone Number</p>
-            <p className="text-base">{driverInfo.nextOfKinContact.phoneNumber}</p>
+            <p className="text-base">{driverInfo.nextOfKinContact?.phoneNumber}</p>
          </div>
          <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-500">Relationship</p>
-            <p className="text-base">{driverInfo.nextOfKinContact.relationship}</p>
+            <p className="text-base">{driverInfo.nextOfKinContact?.relationship}</p>
          </div>
          
          <div className="flex flex-col col-span-2 md:col-span-3">
             <p className="text-sm font-bold text-slate-500">Address</p>
-            <p className="text-base">{driverInfo.contact.address}</p>
+            <p className="text-base">{driverInfo.contact?.address}</p>
          </div>
         
 

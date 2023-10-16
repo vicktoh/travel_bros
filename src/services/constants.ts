@@ -11,3 +11,5 @@ export const  errorMap: Record<string, string> = {
    "auth/email-already-in-use": "User with that email already exists",
    "auth/user-not-found": "There is no user with that email"
 }
+
+export const DEPARTURE_TIMES = ["8AM", "2PM"]

@@ -16,25 +16,25 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { LucideLoader2 } from 'lucide-react';
 import { format } from 'date-fns';
-import { InfoStatus } from '@/types/Driver';
+import { DriverStatus, InfoStatus } from '@/types/Driver';
 import { Empty } from '../drivers/empty-state';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { RegistrationOverView } from './registration-view';
 import { DriverInfoModal } from './driver-modal';
-const STATUS_COLORS: Record<InfoStatus, {title: string, className: string}> = {
-   "complete": {
+const STATUS_COLORS: Record<DriverStatus, {title: string, className: string}> = {
+   "active": {
       title: "not submitted",
-      className: "bg-blue-500 text-white",
+      className: "bg-green-500 text-white hover:bg-green-600",
    },
    "pending": {
       title: "awaiting approval",
       className: "bg-yellow-500 text-black",
    },
-   "empty": {
+   "onboarded": {
       title: "empty",
       className: "bg-gray-500 text-white",
    },
-   "rejected": {
+   "completed": {
       title: "rejected",
       className: "bg-red-500 text-white",
    }
@@ -109,8 +109,8 @@ export default function RegistrationTable() {
                 </TableCell>
                 <TableCell>
                   {reg.status && (
-                    <Badge className={`${STATUS_COLORS[reg.status].className}`}>
-                      Awaiting Approval
+                    <Badge className={`${STATUS_COLORS[reg.status]?.className || ""}`}>
+                       {reg.status}
                     </Badge>
                   )}
                 </TableCell>
