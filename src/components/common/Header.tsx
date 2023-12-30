@@ -22,7 +22,7 @@ type MenuType = {
          segment: 'bookings',
      },
      {
-         title: 'Driver Signup',
+         title: 'Drivers',
          path: '/drivers/signup',
          segment: 'drivers',
      },
